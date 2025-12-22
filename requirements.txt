@@ -1,0 +1,9 @@
+# Dependencias del Sistema de Gestión de Tareas
+
+# Testing
+pytest==7.4.3
+pytest-cov==4.1.0
+
+# Documentación (opcional)
+# openpyxl==3.1.2  # Para trabajar con archivos Excel
+# python-docx==1.1.0  # Para trabajar con archivos Word

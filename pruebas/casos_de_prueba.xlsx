@@ -1,0 +1,33 @@
+PK     ! Nota: Este es un archivo placeholder para casos_de_prueba.xlsx
+Para crear un archivo Excel real, deberá usar una herramienta como Microsoft Excel o LibreOffice Calc.
+
+Contenido sugerido:
+
+CASOS DE PRUEBA - SISTEMA DE GESTIÓN DE TAREAS
+
+Hoja 1: Casos de Prueba de Tareas
+ID | Descripción | Entrada | Resultado Esperado | Estado
+CP01 | Crear tarea básica | Título: "Tarea 1" | Tarea creada con ID único | Pendiente
+CP02 | Crear tarea con prioridad alta | Título: "Urgente", Prioridad: Alta | Tarea creada con prioridad alta | Pendiente
+CP03 | Marcar tarea como completada | ID: 1, Acción: Completar | Estado = Completada, fecha_completada asignada | Pendiente
+CP04 | Listar todas las tareas | - | Lista con todas las tareas | Pendiente
+CP05 | Filtrar por estado pendiente | Estado: Pendiente | Solo tareas pendientes | Pendiente
+
+Hoja 2: Casos de Prueba del Gestor
+ID | Descripción | Entrada | Resultado Esperado | Estado
+CP06 | Obtener tarea existente | ID: 1 | Tarea con ID 1 | Pendiente
+CP07 | Obtener tarea inexistente | ID: 999 | None | Pendiente
+CP08 | Eliminar tarea | ID: 1 | Tarea eliminada, total - 1 | Pendiente
+CP09 | Actualizar tarea | ID: 1, nuevo título | Título actualizado | Pendiente
+CP10 | Generar estadísticas | - | Diccionario con conteos | Pendiente
+
+Hoja 3: Casos de Prueba de Estados
+ID | Descripción | Entrada | Resultado Esperado | Estado
+CP11 | Cambiar a En Progreso | Tarea, marcar_en_progreso() | Estado = En Progreso | Pendiente
+CP12 | Cancelar tarea | Tarea, cancelar() | Estado = Cancelada | Pendiente
+CP13 | Validar estado inicial | Nueva tarea | Estado = Pendiente | Pendiente
+
+Hoja 4: Casos de Prueba de Prioridades
+ID | Descripción | Entrada | Resultado Esperado | Estado
+CP14 | Crear tarea prioridad baja | Prioridad: Baja | prioridad.value = "baja" | Pendiente
+CP15 | Crear tarea prioridad urgente | Prioridad: Urgente | prioridad.value = "urgente" | Pendiente

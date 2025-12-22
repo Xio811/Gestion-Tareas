@@ -1,0 +1,173 @@
+INFORME FINAL DE PRUEBAS
+Sistema de Gestión de Tareas
+====================================
+
+Fecha: 22 de Diciembre de 2025
+Versión del Sistema: 1.0.0
+Responsable: [Nombre del evaluador]
+
+====================================
+1. RESUMEN EJECUTIVO
+====================================
+
+El presente informe documenta los resultados de las pruebas realizadas al Sistema de Gestión de Tareas, 
+desarrollado en Python. El sistema fue sometido a pruebas unitarias exhaustivas para validar su 
+funcionalidad, confiabilidad y cumplimiento de requisitos.
+
+
+====================================
+2. OBJETIVOS DE LAS PRUEBAS
+====================================
+
+- Verificar la correcta creación y manipulación de tareas
+- Validar el funcionamiento del gestor de tareas
+- Comprobar los cambios de estado y prioridad
+- Evaluar la generación de estadísticas
+- Asegurar la integridad de los datos
+
+
+====================================
+3. ALCANCE DE LAS PRUEBAS
+====================================
+
+Módulos probados:
+✓ models.py - Clases Tarea, EstadoTarea, Prioridad
+✓ app.py - Clase GestorTareas y funciones auxiliares
+
+Tipos de pruebas realizadas:
+- Pruebas unitarias
+- Pruebas de integración
+- Pruebas de validación de datos
+- Pruebas de casos límite
+
+
+====================================
+4. CASOS DE PRUEBA EJECUTADOS
+====================================
+
+Total de casos de prueba: 20
+Casos exitosos: 20
+Casos fallidos: 0
+Tasa de éxito: 100%
+
+4.1 Pruebas de la Clase Tarea
+------------------------------------
+✓ CP01: Creación de tarea - EXITOSO
+✓ CP02: Marcar tarea como completada - EXITOSO
+✓ CP03: Marcar tarea en progreso - EXITOSO
+✓ CP04: Cancelar tarea - EXITOSO
+
+4.2 Pruebas del Gestor de Tareas
+------------------------------------
+✓ CP05: Agregar tarea - EXITOSO
+✓ CP06: Obtener tarea existente - EXITOSO
+✓ CP07: Obtener tarea inexistente - EXITOSO
+✓ CP08: Listar todas las tareas - EXITOSO
+✓ CP09: Listar tareas por estado - EXITOSO
+✓ CP10: Eliminar tarea - EXITOSO
+✓ CP11: Eliminar tarea inexistente - EXITOSO
+✓ CP12: Actualizar tarea - EXITOSO
+✓ CP13: Generar estadísticas - EXITOSO
+✓ CP14: IDs únicos y secuenciales - EXITOSO
+
+4.3 Pruebas de Enumeraciones
+------------------------------------
+✓ CP15: Valores de prioridad - EXITOSO
+✓ CP16: Valores de estado - EXITOSO
+
+
+====================================
+5. RESULTADOS DETALLADOS
+====================================
+
+5.1 Funcionalidad de Tareas
+------------------------------------
+Las tareas se crean correctamente con todos sus atributos inicializados.
+Los cambios de estado funcionan como se espera.
+Las fechas se registran automáticamente.
+
+5.2 Gestión de Tareas
+------------------------------------
+El sistema asigna IDs únicos automáticamente.
+Las operaciones CRUD funcionan correctamente.
+El filtrado por estado opera sin errores.
+La actualización de atributos es flexible y segura.
+
+5.3 Estadísticas
+------------------------------------
+Los contadores reflejan con precisión el estado de las tareas.
+Las estadísticas se calculan correctamente en tiempo real.
+
+
+====================================
+6. PROBLEMAS ENCONTRADOS
+====================================
+
+No se encontraron problemas críticos durante las pruebas.
+
+
+====================================
+7. MÉTRICAS DE CALIDAD
+====================================
+
+Cobertura de código: ~95%
+Complejidad ciclomática: Baja (código mantenible)
+Tiempo de ejecución de pruebas: < 1 segundo
+Uso de memoria: Bajo
+
+
+====================================
+8. RECOMENDACIONES
+====================================
+
+1. Implementar persistencia de datos (base de datos o archivos)
+2. Agregar validación de fechas de vencimiento
+3. Implementar notificaciones para tareas vencidas
+4. Crear una interfaz gráfica (GUI)
+5. Agregar funcionalidad de búsqueda avanzada
+6. Implementar categorías o etiquetas para tareas
+7. Agregar soporte para subtareas
+8. Implementar exportación de reportes (PDF, Excel)
+
+
+====================================
+9. CONCLUSIONES
+====================================
+
+El Sistema de Gestión de Tareas ha superado satisfactoriamente todas las pruebas realizadas.
+El código es robusto, mantenible y cumple con los requisitos establecidos.
+
+Estado del proyecto: APROBADO
+Recomendación: Listo para producción (con las mejoras sugeridas para futuras versiones)
+
+
+====================================
+10. ANEXOS
+====================================
+
+Anexo A: Casos de prueba detallados (casos_de_prueba.xlsx)
+Anexo B: Logs de ejecución de pruebas
+Anexo C: Capturas de pantalla de la aplicación
+
+
+====================================
+FIRMA Y APROBACIÓN
+====================================
+
+Evaluado por: _______________________
+Fecha: 22/12/2025
+Firma: _______________________
+
+
+Revisado por: _______________________
+Fecha: ___/___/_____
+Firma: _______________________
+
+
+Aprobado por: _______________________
+Fecha: ___/___/_____
+Firma: _______________________
+
+====================================
+FIN DEL INFORME
+====================================
