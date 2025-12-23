@@ -34,13 +34,28 @@ sistema-gestion-tareas/
 ## 🛠️ Instalación
 
 1. Clonar o descargar el proyecto
-2. Instalar las dependencias (opcional):
+2. Requisitos: Python 3.10+ y pip
+3. (Opcional) Crear un entorno virtual:
+
+```bash
+python -m venv .venv
+.\.venv\Scripts\activate
+```
+
+4. Instalar las dependencias:
 
 ```bash
 pip install -r requirements.txt
 ```
 
 ## ▶️ Uso
+
+### Inicio rapido (Windows):
+
+```bash
+.\.venv\Scripts\activate  # si creaste el venv
+python app.py
+```
 
 ### Ejecutar la aplicación:
 
@@ -84,6 +99,11 @@ Suite completa de pruebas unitarias que cubren:
 - Validación de estados y prioridades
 - Generación de estadísticas
 
+## 📂 Datos de prueba y evidencia
+
+- pruebas/casos_de_prueba.xlsx: Casuistica documentada
+- pruebas/informe_final.docx: Informe final con resultados y responsable
+
 ## 🎮 Menú Principal
 
 1. Agregar tarea
@@ -111,20 +131,12 @@ Los casos de prueba detallados se encuentran en:
 
 ## 👤 Autor
 
-Desarrollado como proyecto de Python
+Desarrollado como proyecto de Python por Xiomara Cardenas
 
 ## 📝 Licencia
 
 Este proyecto es de código abierto y está disponible para uso educativo.
 
-## 🤝 Contribuciones
-
-Las contribuciones son bienvenidas. Por favor:
-1. Fork el proyecto
-2. Crea una rama para tu feature
-3. Commit tus cambios
-4. Push a la rama
-5. Abre un Pull Request
 
 ## 📧 Contacto
 
