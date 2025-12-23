@@ -2,82 +2,159 @@
   "info": {
     "name": "Gestion Tareas API",
     "description": "Colección para probar la API Flask del sistema de gestión de tareas.",
-    "schema": "https://schema.getpostman.com/collection/v2.1.0/collection.json"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    { "key": "baseUrl", "value": "http://localhost:5000" }
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    }
   ],
   "item": [
     {
       "name": "Health",
       "request": {
         "method": "GET",
-        "url": "{{baseUrl}}/health"
-      }
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["health"]
+        }
+      },
+      "response": []
     },
     {
       "name": "Listar tareas (todas)",
       "request": {
         "method": "GET",
-        "url": "{{baseUrl}}/tareas"
-      }
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/tareas",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["tareas"]
+        }
+      },
+      "response": []
     },
     {
-      "name": "Listar tareas por estado",
+      "name": "Listar tareas por estado (pendiente)",
       "request": {
         "method": "GET",
+        "header": [],
         "url": {
           "raw": "{{baseUrl}}/tareas?estado=pendiente",
-          "host": ["{{baseUrl}}"],
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
           "path": ["tareas"],
-          "query": [ { "key": "estado", "value": "pendiente" } ]
+          "query": [
+            {
+              "key": "estado",
+              "value": "pendiente"
+            }
+          ]
         }
-      }
+      },
+      "response": []
     },
     {
       "name": "Crear tarea",
       "request": {
         "method": "POST",
-        "header": [ { "key": "Content-Type", "value": "application/json" } ],
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"titulo\": \"Revisar backlog\",\n  \"descripcion\": \"Sprint actual\",\n  \"prioridad\": \"alta\"\n}"
         },
-        "url": "{{baseUrl}}/tareas"
-      }
+        "url": {
+          "raw": "{{baseUrl}}/tareas",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["tareas"]
+        }
+      },
+      "response": []
     },
     {
       "name": "Obtener tarea por ID",
       "request": {
         "method": "GET",
-        "url": "{{baseUrl}}/tareas/1"
-      }
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/tareas/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["tareas", "1"]
+        }
+      },
+      "response": []
     },
     {
       "name": "Actualizar tarea (PATCH)",
       "request": {
         "method": "PATCH",
-        "header": [ { "key": "Content-Type", "value": "application/json" } ],
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"estado\": \"completada\",\n  \"prioridad\": \"alta\"\n}"
         },
-        "url": "{{baseUrl}}/tareas/1"
-      }
+        "url": {
+          "raw": "{{baseUrl}}/tareas/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["tareas", "1"]
+        }
+      },
+      "response": []
     },
     {
       "name": "Eliminar tarea",
       "request": {
         "method": "DELETE",
-        "url": "{{baseUrl}}/tareas/1"
-      }
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/tareas/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["tareas", "1"]
+        }
+      },
+      "response": []
     },
     {
-      "name": "Estadisticas",
+      "name": "Estadísticas",
       "request": {
         "method": "GET",
-        "url": "{{baseUrl}}/tareas/estadisticas"
-      }
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/tareas/estadisticas",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["tareas", "estadisticas"]
+        }
+      },
+      "response": []
     }
   ]
 }
