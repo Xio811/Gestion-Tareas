@@ -2,19 +2,19 @@
 
 Sistema completo para la gestión de tareas con funcionalidades de creación, actualización, eliminación y estadísticas.
 
-## 📋 Descripción
+## Descripción
 
 Este proyecto es un sistema de gestión de tareas desarrollado en Python que permite organizar y controlar el flujo de trabajo mediante la administración de tareas con diferentes estados y prioridades.
 
-## 🚀 Características
+## Características
 
-- ✅ Crear tareas con título, descripción y prioridad
-- 📝 Actualizar el estado de las tareas
-- 🔍 Listar y filtrar tareas por estado
-- 📊 Ver estadísticas generales
-- 🗑️ Eliminar tareas
-- 🎯 Cuatro niveles de prioridad: Baja, Media, Alta, Urgente
-- 📌 Cuatro estados: Pendiente, En Progreso, Completada, Cancelada
+-  Crear tareas con título, descripción y prioridad
+-  Actualizar el estado de las tareas
+-  Listar y filtrar tareas por estado
+-  Ver estadísticas generales
+-  Eliminar tareas
+-  Cuatro niveles de prioridad: Baja, Media, Alta, Urgente
+-  Cuatro estados: Pendiente, En Progreso, Completada, Cancelada
 
 ## 📁 Estructura del Proyecto
 
