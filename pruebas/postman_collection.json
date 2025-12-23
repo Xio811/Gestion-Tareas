@@ -1,0 +1,83 @@
+{
+  "info": {
+    "name": "Gestion Tareas API",
+    "description": "Colección para probar la API Flask del sistema de gestión de tareas.",
+    "schema": "https://schema.getpostman.com/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/health"
+      }
+    },
+    {
+      "name": "Listar tareas (todas)",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/tareas"
+      }
+    },
+    {
+      "name": "Listar tareas por estado",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/tareas?estado=pendiente",
+          "host": ["{{baseUrl}}"],
+          "path": ["tareas"],
+          "query": [ { "key": "estado", "value": "pendiente" } ]
+        }
+      }
+    },
+    {
+      "name": "Crear tarea",
+      "request": {
+        "method": "POST",
+        "header": [ { "key": "Content-Type", "value": "application/json" } ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"titulo\": \"Revisar backlog\",\n  \"descripcion\": \"Sprint actual\",\n  \"prioridad\": \"alta\"\n}"
+        },
+        "url": "{{baseUrl}}/tareas"
+      }
+    },
+    {
+      "name": "Obtener tarea por ID",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/tareas/1"
+      }
+    },
+    {
+      "name": "Actualizar tarea (PATCH)",
+      "request": {
+        "method": "PATCH",
+        "header": [ { "key": "Content-Type", "value": "application/json" } ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"estado\": \"completada\",\n  \"prioridad\": \"alta\"\n}"
+        },
+        "url": "{{baseUrl}}/tareas/1"
+      }
+    },
+    {
+      "name": "Eliminar tarea",
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/tareas/1"
+      }
+    },
+    {
+      "name": "Estadisticas",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/tareas/estadisticas"
+      }
+    }
+  ]
+}

@@ -83,6 +83,10 @@ python app.py
     - DELETE /tareas/{id} -> elimina
     - GET /tareas/estadisticas -> resumen
 
+#### Colección Postman lista para importar
+- Importa la colección: [pruebas/postman_collection.json](pruebas/postman_collection.json)
+- En Postman: Import -> File -> seleccionar el archivo -> usar variable `baseUrl` (por defecto `http://localhost:5000`).
+
 ### Ejecutar las pruebas:
 
 ```bash
