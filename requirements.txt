@@ -1,5 +1,8 @@
 # Dependencias del Sistema de Gestión de Tareas
 
+# API
+Flask==3.0.1
+
 # Testing
 pytest==7.4.3
 pytest-cov==4.1.0

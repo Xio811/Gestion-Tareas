@@ -1,197 +1,186 @@
 """
 Sistema de Gestión de Tareas
-Aplicación principal
+API con Flask para pruebas con Postman
 """
-from models import Tarea, EstadoTarea, Prioridad
 from datetime import datetime
+
+from flask import Flask, jsonify, request, abort
+
+from models import Tarea, EstadoTarea, Prioridad
 
 
 class GestorTareas:
-    """Clase principal para gestionar tareas"""
-    
+    """Gestor en memoria de tareas"""
+
     def __init__(self):
         self.tareas = []
         self.siguiente_id = 1
-    
+
     def agregar_tarea(self, titulo, descripcion="", prioridad=Prioridad.MEDIA):
-        """Agrega una nueva tarea al sistema"""
         tarea = Tarea(titulo, descripcion, prioridad)
         tarea.id = self.siguiente_id
         self.siguiente_id += 1
         self.tareas.append(tarea)
         return tarea
-    
+
     def obtener_tarea(self, tarea_id):
-        """Obtiene una tarea por su ID"""
-        for tarea in self.tareas:
-            if tarea.id == tarea_id:
-                return tarea
-        return None
-    
+        return next((t for t in self.tareas if t.id == tarea_id), None)
+
     def listar_tareas(self, estado=None):
-        """Lista todas las tareas, opcionalmente filtradas por estado"""
         if estado:
             return [t for t in self.tareas if t.estado == estado]
         return self.tareas
-    
+
     def eliminar_tarea(self, tarea_id):
-        """Elimina una tarea del sistema"""
         tarea = self.obtener_tarea(tarea_id)
         if tarea:
             self.tareas.remove(tarea)
             return True
         return False
-    
+
     def actualizar_tarea(self, tarea_id, **kwargs):
-        """Actualiza los campos de una tarea"""
         tarea = self.obtener_tarea(tarea_id)
         if not tarea:
-            return False
-        
-        for clave, valor in kwargs.items():
-            if hasattr(tarea, clave):
-                setattr(tarea, clave, valor)
-        return True
-    
+            return None
+
+        if "titulo" in kwargs:
+            tarea.titulo = kwargs["titulo"]
+        if "descripcion" in kwargs:
+            tarea.descripcion = kwargs["descripcion"]
+        if "prioridad" in kwargs and isinstance(kwargs["prioridad"], Prioridad):
+            tarea.prioridad = kwargs["prioridad"]
+        if "estado" in kwargs and isinstance(kwargs["estado"], EstadoTarea):
+            if kwargs["estado"] == EstadoTarea.PENDIENTE:
+                tarea.estado = EstadoTarea.PENDIENTE
+                tarea.fecha_completada = None
+            elif kwargs["estado"] == EstadoTarea.EN_PROGRESO:
+                tarea.marcar_en_progreso()
+                tarea.fecha_completada = None
+            elif kwargs["estado"] == EstadoTarea.COMPLETADA:
+                tarea.marcar_completada()
+            elif kwargs["estado"] == EstadoTarea.CANCELADA:
+                tarea.cancelar()
+
+        return tarea
+
     def estadisticas(self):
-        """Genera estadísticas sobre las tareas"""
         total = len(self.tareas)
         pendientes = len([t for t in self.tareas if t.estado == EstadoTarea.PENDIENTE])
         en_progreso = len([t for t in self.tareas if t.estado == EstadoTarea.EN_PROGRESO])
         completadas = len([t for t in self.tareas if t.estado == EstadoTarea.COMPLETADA])
         canceladas = len([t for t in self.tareas if t.estado == EstadoTarea.CANCELADA])
-        
+
         return {
-            'total': total,
-            'pendientes': pendientes,
-            'en_progreso': en_progreso,
-            'completadas': completadas,
-            'canceladas': canceladas
+            "total": total,
+            "pendientes": pendientes,
+            "en_progreso": en_progreso,
+            "completadas": completadas,
+            "canceladas": canceladas,
         }
 
 
-def mostrar_menu():
-    """Muestra el menú principal"""
-    print("\n" + "="*50)
-    print("   SISTEMA DE GESTIÓN DE TAREAS")
-    print("="*50)
-    print("1. Agregar tarea")
-    print("2. Listar tareas")
-    print("3. Ver tarea específica")
-    print("4. Actualizar estado de tarea")
-    print("5. Eliminar tarea")
-    print("6. Ver estadísticas")
-    print("0. Salir")
-    print("="*50)
+def _tarea_to_dict(tarea: Tarea) -> dict:
+    """Serializa una tarea para respuestas JSON"""
+    return {
+        "id": tarea.id,
+        "titulo": tarea.titulo,
+        "descripcion": tarea.descripcion,
+        "prioridad": tarea.prioridad.value,
+        "estado": tarea.estado.value,
+        "fecha_creacion": tarea.fecha_creacion.isoformat(),
+        "fecha_completada": tarea.fecha_completada.isoformat() if tarea.fecha_completada else None,
+    }
 
 
-def main():
-    """Función principal"""
+def _parse_prioridad(valor: str) -> Prioridad:
+    if not valor:
+        return Prioridad.MEDIA
+    valor_normalizado = valor.strip().lower()
+    for prioridad in Prioridad:
+        if prioridad.value == valor_normalizado:
+            return prioridad
+    abort(400, description="Prioridad invalida. Usa: baja, media, alta, urgente")
+
+
+def _parse_estado(valor: str) -> EstadoTarea:
+    if not valor:
+        abort(400, description="Estado requerido")
+    valor_normalizado = valor.strip().lower()
+    for estado in EstadoTarea:
+        if estado.value == valor_normalizado:
+            return estado
+    abort(400, description="Estado invalido. Usa: pendiente, en_progreso, completada, cancelada")
+
+
+def create_app() -> Flask:
+    app = Flask(__name__)
     gestor = GestorTareas()
-    
-    # Agregar algunas tareas de ejemplo
-    gestor.agregar_tarea("Completar documentación", "Documentar las funciones principales", Prioridad.ALTA)
-    gestor.agregar_tarea("Revisar código", "Code review del módulo principal", Prioridad.MEDIA)
-    gestor.agregar_tarea("Crear pruebas unitarias", "Implementar tests", Prioridad.ALTA)
-    
-    while True:
-        mostrar_menu()
-        opcion = input("\nSeleccione una opción: ").strip()
-        
-        if opcion == "1":
-            titulo = input("Título de la tarea: ")
-            descripcion = input("Descripción: ")
-            print("\nPrioridad: 1-Baja, 2-Media, 3-Alta, 4-Urgente")
-            prioridad_input = input("Seleccione prioridad (2): ").strip() or "2"
-            prioridades = {
-                "1": Prioridad.BAJA,
-                "2": Prioridad.MEDIA,
-                "3": Prioridad.ALTA,
-                "4": Prioridad.URGENTE
-            }
-            prioridad = prioridades.get(prioridad_input, Prioridad.MEDIA)
-            
-            tarea = gestor.agregar_tarea(titulo, descripcion, prioridad)
-            print(f"\n✓ Tarea agregada exitosamente (ID: {tarea.id})")
-        
-        elif opcion == "2":
-            tareas = gestor.listar_tareas()
-            if not tareas:
-                print("\nNo hay tareas registradas.")
-            else:
-                print("\n" + "="*80)
-                print(f"{'ID':<5} {'Título':<30} {'Prioridad':<12} {'Estado':<15}")
-                print("="*80)
-                for tarea in tareas:
-                    print(f"{tarea.id:<5} {tarea.titulo[:28]:<30} {tarea.prioridad.value:<12} {tarea.estado.value:<15}")
-                print("="*80)
-        
-        elif opcion == "3":
-            tarea_id = int(input("ID de la tarea: "))
-            tarea = gestor.obtener_tarea(tarea_id)
-            if tarea:
-                print("\n" + "="*60)
-                print(f"ID: {tarea.id}")
-                print(f"Título: {tarea.titulo}")
-                print(f"Descripción: {tarea.descripcion}")
-                print(f"Prioridad: {tarea.prioridad.value}")
-                print(f"Estado: {tarea.estado.value}")
-                print(f"Fecha creación: {tarea.fecha_creacion.strftime('%Y-%m-%d %H:%M')}")
-                print("="*60)
-            else:
-                print("\n✗ Tarea no encontrada.")
-        
-        elif opcion == "4":
-            tarea_id = int(input("ID de la tarea: "))
-            tarea = gestor.obtener_tarea(tarea_id)
-            if tarea:
-                print("\n1. Pendiente")
-                print("2. En progreso")
-                print("3. Completada")
-                print("4. Cancelada")
-                estado_opcion = input("Nuevo estado: ")
-                
-                if estado_opcion == "1":
-                    tarea.estado = EstadoTarea.PENDIENTE
-                elif estado_opcion == "2":
-                    tarea.marcar_en_progreso()
-                elif estado_opcion == "3":
-                    tarea.marcar_completada()
-                elif estado_opcion == "4":
-                    tarea.cancelar()
-                
-                print("\n✓ Estado actualizado.")
-            else:
-                print("\n✗ Tarea no encontrada.")
-        
-        elif opcion == "5":
-            tarea_id = int(input("ID de la tarea a eliminar: "))
-            confirmacion = input("¿Está seguro? (s/n): ")
-            if confirmacion.lower() == 's':
-                if gestor.eliminar_tarea(tarea_id):
-                    print("\n✓ Tarea eliminada.")
-                else:
-                    print("\n✗ Tarea no encontrada.")
-        
-        elif opcion == "6":
-            stats = gestor.estadisticas()
-            print("\n" + "="*40)
-            print("   ESTADÍSTICAS")
-            print("="*40)
-            print(f"Total de tareas:     {stats['total']}")
-            print(f"Pendientes:          {stats['pendientes']}")
-            print(f"En progreso:         {stats['en_progreso']}")
-            print(f"Completadas:         {stats['completadas']}")
-            print(f"Canceladas:          {stats['canceladas']}")
-            print("="*40)
-        
-        elif opcion == "0":
-            print("\n¡Hasta luego!")
-            break
-        
-        else:
-            print("\n✗ Opción no válida.")
+
+    @app.route("/health", methods=["GET"])
+    def health():
+        return jsonify({"status": "ok"})
+
+    @app.route("/tareas", methods=["GET"])
+    def listar_tareas():
+        estado_param = request.args.get("estado")
+        estado = _parse_estado(estado_param) if estado_param else None
+        tareas = gestor.listar_tareas(estado)
+        return jsonify([_tarea_to_dict(t) for t in tareas])
+
+    @app.route("/tareas/<int:tarea_id>", methods=["GET"])
+    def obtener_tarea(tarea_id):
+        tarea = gestor.obtener_tarea(tarea_id)
+        if not tarea:
+            abort(404, description="Tarea no encontrada")
+        return jsonify(_tarea_to_dict(tarea))
+
+    @app.route("/tareas", methods=["POST"])
+    def crear_tarea():
+        data = request.get_json(silent=True) or {}
+        titulo = data.get("titulo")
+        if not titulo:
+            abort(400, description="El campo 'titulo' es obligatorio")
+        descripcion = data.get("descripcion", "")
+        prioridad = _parse_prioridad(data.get("prioridad"))
+        tarea = gestor.agregar_tarea(titulo, descripcion, prioridad)
+        return jsonify(_tarea_to_dict(tarea)), 201
+
+    @app.route("/tareas/<int:tarea_id>", methods=["PATCH"])
+    def actualizar_tarea(tarea_id):
+        data = request.get_json(silent=True) or {}
+        tarea = gestor.obtener_tarea(tarea_id)
+        if not tarea:
+            abort(404, description="Tarea no encontrada")
+
+        updates = {}
+        if "titulo" in data:
+            updates["titulo"] = data["titulo"]
+        if "descripcion" in data:
+            updates["descripcion"] = data["descripcion"]
+        if "prioridad" in data:
+            updates["prioridad"] = _parse_prioridad(data["prioridad"])
+        if "estado" in data:
+            updates["estado"] = _parse_estado(data["estado"])
+
+        tarea_actualizada = gestor.actualizar_tarea(tarea_id, **updates)
+        return jsonify(_tarea_to_dict(tarea_actualizada))
+
+    @app.route("/tareas/<int:tarea_id>", methods=["DELETE"])
+    def eliminar_tarea(tarea_id):
+        eliminada = gestor.eliminar_tarea(tarea_id)
+        if not eliminada:
+            abort(404, description="Tarea no encontrada")
+        return jsonify({"mensaje": "Tarea eliminada"})
+
+    @app.route("/tareas/estadisticas", methods=["GET"])
+    def obtener_estadisticas():
+        return jsonify(gestor.estadisticas())
+
+    return app
+
+
+app = create_app()
 
 
 if __name__ == "__main__":
-    main()
+    app.run(debug=True)

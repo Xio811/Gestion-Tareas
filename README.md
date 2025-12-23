@@ -63,6 +63,26 @@ python app.py
 python app.py
 ```
 
+### Probar la API Flask (Postman)
+
+- URL base: http://localhost:5000
+- Endpoints clave:
+    - GET /health -> estado del servicio
+    - GET /tareas?estado=pendiente -> lista tareas (filtrado opcional)
+    - POST /tareas -> crea tarea. Ejemplo body:
+
+```json
+{
+    "titulo": "Revisar backlog",
+    "descripcion": "Sprint actual",
+    "prioridad": "alta"
+}
+```
+
+    - PATCH /tareas/{id} -> actualiza campos (titulo, descripcion, prioridad, estado)
+    - DELETE /tareas/{id} -> elimina
+    - GET /tareas/estadisticas -> resumen
+
 ### Ejecutar las pruebas:
 
 ```bash
